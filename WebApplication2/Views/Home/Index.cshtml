@@ -1,0 +1,334 @@
+﻿@using WebApplication2.Models
+@{
+Layout = null;
+}
+
+<!DOCTYPE html>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>my page</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+
+<body>
+<header class="header">
+    <div class="header__first-line">
+        <button class="header__city">
+            <img src="\images\Path.svg" alt="">
+            <p>Москва</p>
+        </button>
+        <a href="">8 800 550 83 13</a>
+        <button class="header__call">
+            <p>Заказать звонок</p>
+        </button>
+        <button class="header__login">
+            <p>Вход и регистрация</p>
+        </button>
+    </div>
+    <div class="header__second-line">
+        <a href= "" class="header__logo">
+            <img src="\images\\advantshop.svg" alt="logo">
+        </a>
+        <input type="search" placeholder="Поиск по товарам" class="header__search">
+        <div class="header__icons">
+            <img src="\images\\3.svg" alt="">
+            <img src="\images\\сравнение.svg" alt="">
+            <img src="\images\\Vector.svg" alt="">
+            <a href="">Корзина</a>
+        </div>
+    </div>
+    <div class="header__third-line">
+        <button class="header__catalog">
+            <img src="\images\\Vector2.svg" alt="">
+            <p>Каталог товаров</p>
+        </button>
+        <nav class="header__menu">
+            <button class="header__button-first">
+                <p>О магазине</p>
+                <img src="\images\\выпадайка.svg" alt="">
+            </button>
+            <button>
+                <p>Скидки</p>
+            </button>
+            <button>
+                <p>Доставка и оплата</p>
+            </button>
+            <button>
+                <p>Услуги</p>
+            </button>
+            <button>
+                <p>Акции</p>
+            </button>
+            <button>
+                <p>Блог</p>
+            </button>
+            <button class="header__button-last">
+                <p>Контакты</p>
+            </button>
+        </nav>
+    </div>
+</header>
+
+<main class="main">
+    <div class="main__first-column">
+        <ul class="main__sidebar">
+            @foreach (var cat in ViewBag.Categories)
+            {
+                if (cat.Parent == null)
+                {
+                    <li class="main__sidebar-li">
+                        <form action="/Categories" method="get" class="main__sidebar-li-form">
+                            <input type="hidden" name="id" value="@cat.ID" />
+                            <button type="submit">
+                                <p>@cat.Name</p>
+                                <img src="\images\\выпадайка2.svg" alt="">
+                            </button>
+                        </form>
+                    </li>
+                }
+            }
+        </ul>
+        <div class="main_ad"></div>
+    </div>
+    <div class="main__second-column">
+        <div class="main__banner">
+            <div class="main__banner-info">
+                <h1>Ноутбуки, планшеты и компьютеры</h1>
+                <b>Верные помощники для удаленки</b>
+                <button>
+                    <b>Посмотреть каталог</b>
+                </button>
+            </div>
+        </div>
+        <ul class="main__description">
+            <li>
+                <img src="\images\\percent.svg" alt="">
+                <p>Акции и скидки для постоянных клиентов</p>
+            </li>
+            <li>
+                <img src="\images\\Star Icon.svg" alt="">
+                <p>Качественные услуги и сервис</p>
+            </li>
+            <li>
+                <img src="\images\\Vector3.svg" alt="">
+                <p>Широкий ассортимент товаров</p>
+            </li>
+        </ul>
+        <div class="main__categories">
+            <h2>Популярные категории</h2>
+            <ul>
+                @foreach (var cat in ViewBag.PopularCategories)
+                {
+                    <li>
+                        <form action="/Categories" method="get" class="main__categories-li-form">
+                            <input type="hidden" name="id" value="@cat.ID" />
+                            <button type="submit">
+                                <div>
+                                    <img src="\images\\@cat.LinkToImage" alt="">
+                                </div>
+                                <b>@cat.Name</b>
+                            </button>
+                        </form>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="main__new">
+            <h2>Новинки</h2>
+            <ul class="main__new-ul">
+                @foreach (var product in ViewBag.ThreeProducts)
+                {
+                    <li class="main__new-ul-li">
+                        <div class="main__new-ul-li-img">
+                            <img src="\images\\@product.LinkToImage" alt="@product.Name">
+                        </div>
+                        <h3>@product.Name</h3>
+                        <ul class="main__new-star">
+                            @for (int i = 1; i <= Convert.ToInt32(product.Grade); i++)
+                            {
+                                <li>
+                                    <img src="\images\\stariconyellow.svg" alt="">
+                                </li>
+                            }
+                            @for (int i = Convert.ToInt32(product.Grade); i < 5; i++)
+                            {
+                                <li>
+                                    <img src="\images\\staricongray.svg" alt="">
+                                </li>
+                            }
+                        </ul>
+                        @if (product.Quantity > 0)
+                        {
+                            <p class="main__new-ul-li-green-text">В наличии</p>
+                        }
+                        else
+                        {
+                            <p class="main__new-ul-li-gray-text">Нет в наличии</p>
+                        }
+                        <div class="main__new-ul-li-cart-footer">
+                            <b>@Convert.ToInt32(product.Cost) руб.</b>
+                            <button class="main__new-ul-li-cart-footer-button">
+                                <img src="\images\\Vector.svg" alt="">
+                                <p>В корзину</p>
+                            </button>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="main__hits">
+            <h2>Хиты продаж</h2>
+            <ul class="main__hits-ul">
+                @foreach (var product in ViewBag.PopularProducts)
+                {
+                <li class="main__hits-ul-li">
+                    <div class="main__hits-ul-li-img">
+                        <img src="\images\\@product.LinkToImage" alt="@product.Name">
+                    </div>
+                    <h3>@product.Name</h3>
+                    <ul class="main__hits-star">
+                        @for (int i = 1; i <= Convert.ToInt32(product.Grade); i++)
+                        {
+                        <li>
+                            <img src="\images\\stariconyellow.svg" alt="">
+                        </li>
+                        }
+                        @for (int i = Convert.ToInt32(product.Grade); i < 5; i++)
+                        {
+                        <li>
+                            <img src="\images\\staricongray.svg" alt="">
+                        </li>
+                        }
+                    </ul>
+                    @if (product.Quantity > 0)
+                    {
+                    <p class="main__hits-ul-li-green-text">В наличии</p>
+                    }
+                    else
+                    {
+                    <p class="main__hits-ul-li-gray-text">Нет в наличии</p>
+                    }
+                    <div class="main__hits-ul-li-cart-footer">
+                        <b>@Convert.ToInt32(product.Cost) руб.</b>
+                        <button class="main__hits-ul-li-cart-footer-button">
+                            <img src="\images\\Vector.svg" alt="">
+                            <p>В корзину</p>
+                        </button>
+                    </div>
+                </li>
+                }
+            </ul>
+        </div>
+        <div class="main__first-text">
+            <div class="main__write-up">
+                <h2>INTEC:Universe LITE - интернет-магазин с конструктором дизайна на редакции 1C-Битрикс «СТАРТ»</h2>
+                <b>INTEC.UniverseLite - первый конструктор интернет-магазинов на редакции «СТАРТ» 1C-Битрикс. Решение идеально подойдет для быстрого запуска современного и многофункционального интернет-магазина на редакции «СТАРТ», без лишних расходов и привлечения сторонних специалистов. INTEC.UniverseLite может легко трансформироваться в отраслевое решение любой сферы бизнеса <br>
+                    <br>
+                    <a href="">Подробнее</a></b>
+            </div>
+            <div class="main__first-text-img">
+                <img src="\images\\image17.jpg" alt="Тут должна быть картинка">
+            </div>
+        </div>
+        <div class="main__texts">
+            <h2>Статьи</h2>
+            <ul>
+                <li>
+                    <div class="main__images">
+                        <img src="\images\\image 16.jpg" alt="">
+                    </div>
+                    <h3>Оставьте отзыв, чтобы помочь другим </h3>
+                    <p>Стильная и независимая. Легко управляйте средствами на вашем счёте. Получайте информацию о ваших финансах, платежах и переводах при помощи сообщений.</p>
+                </li>
+                <li>
+                    <div class="main__images">
+                        <img src="\images\\image 1.jpg" alt="">
+                    </div>
+                    <h3>Где купить терминал
+                        для эквайринга</h3>
+                    <p>Стильная и независимая. Легко управляйте средствами на вашем счёте. Получайте информацию о ваших финансах, платежах и переводах при помощи сообщений.</p>
+                </li>
+                <li>
+                    <div class="main__images">
+                        <img src="\images\\image 2.jpg" alt="">
+                    </div>
+                    <h3>Как выбрать свой идеальный телефон</h3>
+                    <p>Подключите автоплатёж и будьте уверены, что налог оплачен в срок. Вам не придётся тратить время на поиск суммы к уплате в личном кабинете налогоплательщика.</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="main__end">
+        <p>Подписка на новости</p>
+        <input type="email" placeholder="Ваш e-mail" class="main__email">
+        <button class="main__subscribe">
+            <p>Подписаться</p>
+        </button>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="footer__grid">
+        <ul>
+            <li><p>Каталог</p></li>
+            <li><a href="">Телефоны</a></li>
+            <li><a href="">Техника</a></li>
+            <li><a href="">Одежда/обувь</a></li>
+            <li><a href="">Детские товары</a></li>
+            <li><a href="">Цветы</a></li>
+            <li><a href="">Еда/напитки</a></li>
+        </ul>
+        <ul>
+            <li><p>Информация</p></li>
+            <li><a href="">О магазине</a></li>
+            <li><a href="">Бренды</a></li>
+            <li><a href="">Доставка и оплата</a></li>
+            <li><a href="">Блог</a></li>
+            <li><a href="">Бонусная программа</a></li>
+            <li><a href="">Контакты</a></li>
+        </ul>
+        <ul>
+            <li><p>Личный кабинет</p></li>
+            <li><a href="">Вход</a></li>
+            <li><a href="">Регистрация</a></li>
+            <li><a href="">Забыли пароль?</a></li>
+        </ul>
+        <ul class="footer__column-last">
+            <li><p>Мы в социальных сетях</p></li>
+            <li><a href="">Вконтакте</a></li>
+            <li><a href="">Фейсбук</a></li>
+            <li><a href="">Твиттер</a></li>
+        </ul>
+    </div>
+    <a href="" class="footer__sertificate-image">
+        <img src="\images\\Group28.jpg" alt="">
+    </a>
+    <div class="footer__last-info">
+        <a href="" class="footer_advant-info">
+            © 2020 AdvantShop
+        </a>
+        <div class="footer__icons">
+            <img src="\images\\023-paypal.svg" alt="" class="footer__paypal">
+            <img src="\images\\image.svg" alt="" class="footer__cash">
+            <img src="\images\\card-mastercard.svg" alt="" class="footer__mastercard">
+            <img src="\images\\card-visa.svg" alt="" class="footer__visa">
+            <img src="\images\\card-mir.svg" alt="" class="footer__mir">
+        </div>
+        <div class="footer__policy-info">
+            <a href="">
+                Лицензионное соглашение
+            </a>
+            <a href="">
+                Политика конфиденциальности
+            </a>
+        </div>
+    </div>
+</footer>
+</body>
+
+</html>
